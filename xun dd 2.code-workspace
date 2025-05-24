@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../Downloads/xun dd"
+		},
+		{
+			"path": "XunEnergy 22"
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501,
+		"liveServer.settings.multiRootWorkspaceName": "XunEnergy 22"
+	}
+}

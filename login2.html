@@ -1,0 +1,624 @@
+<!----
+14 October 2024
+XunEnergy Academy
+Delight Chetter
+Matebho Makale 
+Calvin Costa the developer-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XunEnergy Academy - School Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .eco-gradient-bg {
+            background: linear-gradient(135deg, #1a3a3a 0%, #2c5545 50%, #3a7d44 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(58, 125, 68, 0.3);
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        
+        .solar-panel {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 20px auto;
+        }
+        
+        .solar-cell {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #f5d76e;
+            border-radius: 2px;
+            animation: solar-glow 2s infinite alternate;
+        }
+        
+        @keyframes solar-glow {
+            0% { opacity: 0.7; box-shadow: 0 0 5px #f5d76e; }
+            100% { opacity: 1; box-shadow: 0 0 15px #f5d76e; }
+        }
+        
+        /* Position solar cells in a grid */
+        .solar-cell:nth-child(1) { top: 10px; left: 10px; animation-delay: 0s; }
+        .solar-cell:nth-child(2) { top: 10px; left: 40px; animation-delay: 0.2s; }
+        .solar-cell:nth-child(3) { top: 10px; left: 70px; animation-delay: 0.4s; }
+        .solar-cell:nth-child(4) { top: 40px; left: 10px; animation-delay: 0.6s; }
+        .solar-cell:nth-child(5) { top: 40px; left: 40px; animation-delay: 0.8s; }
+        .solar-cell:nth-child(6) { top: 40px; left: 70px; animation-delay: 1s; }
+        .solar-cell:nth-child(7) { top: 70px; left: 10px; animation-delay: 1.2s; }
+        .solar-cell:nth-child(8) { top: 70px; left: 40px; animation-delay: 1.4s; }
+        .solar-cell:nth-child(9) { top: 70px; left: 70px; animation-delay: 1.6s; }
+        
+        /* Eco-friendly colors */
+        .eco-primary {
+            background-color: #3a7d44;
+        }
+        .eco-primary-hover:hover {
+            background-color: #2c5545;
+        }
+        .eco-secondary {
+            background-color: #2c5545;
+        }
+        .eco-text {
+            color: #3a7d44;
+        }
+        .eco-text-hover:hover {
+            color: #2c5545;
+        }
+        .eco-border {
+            border-color: #3a7d44;
+        }
+    </style>
+</head>
+<body class="eco-gradient-bg min-h-screen flex items-center justify-center p-4">
+    <!-- Solar Panel Animation -->
+    <div class="fixed top-4 right-4">
+        <div class="solar-panel">
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+            <div class="solar-cell"></div>
+        </div>
+        <p class="text-white text-xs text-center">Powered by Solar Energy</p>
+    </div>
+    
+    <div class="max-w-md w-full bg-white rounded-xl overflow-hidden card-shadow transition-all duration-300 transform hover:scale-[1.01]">
+        <!-- Header -->
+        <div class="eco-primary py-6 px-8 text-center">
+            <div class="flex items-center justify-center mb-2">
+                <i class="fas fa-leaf text-white text-4xl mr-3"></i>
+                <h1 class="text-3xl font-bold text-white">XunEnergy Academy</h1>
+            </div>
+            <p class="text-green-100">Sustainable School Portal</p>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="flex border-b">
+            <button id="login-tab" class="flex-1 py-4 px-6 text-center font-medium eco-text border-b-2 eco-border bg-green-50">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+            </button>
+            <button id="signup-tab" class="flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:eco-text">
+                <i class="fas fa-user-plus mr-2"></i>Sign Up
+            </button>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="login-form" class="p-8">
+            <div class="mb-6">
+                <label for="login-username" class="block text-sm font-medium text-gray-700 mb-1">Username/Email</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user text-gray-400"></i>
+                    </div>
+                    <input type="text" id="login-username" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter your username or email">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-gray-400"></i>
+                    </div>
+                    <input type="password" id="login-password" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter your password">
+                    <button class="absolute right-3 top-3 text-gray-400 hover:eco-text" type="button" id="toggle-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember-me" class="h-4 w-4 eco-text focus:ring-green-500 border-gray-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                </div>
+                <button id="forgot-password" class="text-sm eco-text hover:eco-text-hover">Forgot password?</button>
+            </div>
+            
+            <button id="login-button" class="w-full eco-primary text-white py-3 px-4 rounded-lg hover:eco-primary-hover focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 font-medium">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+            </button>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Don't have an account? <button id="switch-to-signup" class="eco-text hover:eco-text-hover font-medium">Sign up here</button></p>
+            </div>
+        </div>
+        
+        <!-- Signup Form (Hidden by default) -->
+        <div id="signup-form" class="p-8 hidden">
+            <div class="mb-6">
+                <label for="signup-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user text-gray-400"></i>
+                    </div>
+                    <input type="text" id="signup-username" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Choose a username">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-envelope text-gray-400"></i>
+                    </div>
+                    <input type="email" id="signup-email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter your email">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-gray-400"></i>
+                    </div>
+                    <input type="password" id="signup-password" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Create a password">
+                    <button class="absolute right-3 top-3 text-gray-400 hover:eco-text" type="button" id="toggle-signup-password">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-gray-400"></i>
+                    </div>
+                    <input type="password" id="signup-confirm-password" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Confirm your password">
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label for="user-type" class="block text-sm font-medium text-gray-700 mb-1">I am a</label>
+                <select id="user-type" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300">
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
+                    <option value="guest">Guest</option>
+                </select>
+            </div>
+            
+            <!-- Staff Passkey Field (Hidden by default) -->
+            <div id="staff-passkey-container" class="mb-6 hidden">
+                <label for="staff-passkey" class="block text-sm font-medium text-gray-700 mb-1">Staff Passkey</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-key text-gray-400"></i>
+                    </div>
+                    <input type="password" id="staff-passkey" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter staff passkey">
+                </div>
+                <p class="mt-1 text-xs text-gray-500">Required for staff members</p>
+            </div>
+            
+            <div class="flex items-center mb-6">
+                <input type="checkbox" id="terms" class="h-4 w-4 eco-text focus:ring-green-500 border-gray-300 rounded">
+                <label for="terms" class="ml-2 block text-sm text-gray-700">I agree to the <a href="#" class="eco-text hover:eco-text-hover">Terms of Service</a> and <a href="#" class="eco-text hover:eco-text-hover">Privacy Policy</a></label>
+            </div>
+            
+            <button id="signup-button" class="w-full eco-primary text-white py-3 px-4 rounded-lg hover:eco-primary-hover focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 font-medium">
+                <i class="fas fa-user-plus mr-2"></i>Create Account
+            </button>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Already have an account? <button id="switch-to-login" class="eco-text hover:eco-text-hover font-medium">Login here</button></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Error Modal -->
+    <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 card-shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Error</h3>
+                <button id="close-error-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p id="error-message" class="text-gray-700 mb-4">Incorrect username or password. Please try again.</p>
+            <button id="error-modal-ok" class="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300">
+                OK
+            </button>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 card-shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold eco-text"><i class="fas fa-check-circle mr-2"></i>Success</h3>
+                <button id="close-success-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p id="success-message" class="text-gray-700 mb-4">Your account has been created successfully!</p>
+            <button id="success-modal-ok" class="w-full eco-primary text-white py-2 px-4 rounded-lg hover:eco-primary-hover focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300">
+                OK
+            </button>
+        </div>
+    </div>
+    
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 card-shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold eco-text"><i class="fas fa-key mr-2"></i>Forgot Password</h3>
+                <button id="close-forgot-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+            <div class="mb-4">
+                <label for="forgot-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-envelope text-gray-400"></i>
+                    </div>
+                    <input type="email" id="forgot-email" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter your email">
+                </div>
+            </div>
+            <button id="send-reset-link" class="w-full eco-primary text-white py-2 px-4 rounded-lg hover:eco-primary-hover focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300">
+                Send Reset Link
+            </button>
+        </div>
+    </div>
+    
+    <!-- Passkey Modal (for staff login) -->
+    <div id="passkey-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full mx-4 card-shadow">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold eco-text"><i class="fas fa-key mr-2"></i>Staff Verification</h3>
+                <button id="close-passkey-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-4">Please enter your staff passkey to continue.</p>
+            <div class="mb-4">
+                <label for="login-passkey" class="block text-sm font-medium text-gray-700 mb-1">Passkey</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-key text-gray-400"></i>
+                    </div>
+                    <input type="password" id="login-passkey" class="pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:eco-border input-focus transition duration-300" placeholder="Enter staff passkey">
+                </div>
+            </div>
+            <button id="verify-passkey" class="w-full eco-primary text-white py-2 px-4 rounded-lg hover:eco-primary-hover focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300">
+                Verify
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginTab = document.getElementById('login-tab');
+        const signupTab = document.getElementById('signup-tab');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const switchToSignup = document.getElementById('switch-to-signup');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const loginButton = document.getElementById('login-button');
+        const signupButton = document.getElementById('signup-button');
+        const togglePassword = document.getElementById('toggle-password');
+        const toggleSignupPassword = document.getElementById('toggle-signup-password');
+        const loginPassword = document.getElementById('login-password');
+        const signupPassword = document.getElementById('signup-password');
+        const errorModal = document.getElementById('error-modal');
+        const closeErrorModal = document.getElementById('close-error-modal');
+        const errorModalOk = document.getElementById('error-modal-ok');
+        const errorMessage = document.getElementById('error-message');
+        const successModal = document.getElementById('success-modal');
+        const closeSuccessModal = document.getElementById('close-success-modal');
+        const successModalOk = document.getElementById('success-modal-ok');
+        const successMessage = document.getElementById('success-message');
+        const forgotPassword = document.getElementById('forgot-password');
+        const forgotModal = document.getElementById('forgot-modal');
+        const closeForgotModal = document.getElementById('close-forgot-modal');
+        const sendResetLink = document.getElementById('send-reset-link');
+        const userType = document.getElementById('user-type');
+        const staffPasskeyContainer = document.getElementById('staff-passkey-container');
+        const passkeyModal = document.getElementById('passkey-modal');
+        const closePasskeyModal = document.getElementById('close-passkey-modal');
+        const verifyPasskey = document.getElementById('verify-passkey');
+        
+        // User accounts storage
+        let userAccounts = [
+            { username: 'Delight chetter', email: 'delight@example.com', password: '20040415', type: 'staff' },
+            { username: 'tumelo', email: 'tumelo@example.com', password: '20040416', type: 'student' }
+        ];
+
+        // Toggle between login and signup forms
+        signupTab.addEventListener('click', () => {
+            loginTab.classList.remove('eco-text', 'eco-border', 'bg-green-50');
+            loginTab.classList.add('text-gray-500');
+            signupTab.classList.add('eco-text', 'eco-border', 'bg-green-50');
+            signupTab.classList.remove('text-gray-500');
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+        });
+
+        loginTab.addEventListener('click', () => {
+            signupTab.classList.remove('eco-text', 'eco-border', 'bg-green-50');
+            signupTab.classList.add('text-gray-500');
+            loginTab.classList.add('eco-text', 'eco-border', 'bg-green-50');
+            loginTab.classList.remove('text-gray-500');
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        switchToSignup.addEventListener('click', () => {
+            signupTab.click();
+        });
+
+        switchToLogin.addEventListener('click', () => {
+            loginTab.click();
+        });
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', () => {
+            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            loginPassword.setAttribute('type', type);
+            togglePassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        toggleSignupPassword.addEventListener('click', () => {
+            const type = signupPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            signupPassword.setAttribute('type', type);
+            toggleSignupPassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // Show/hide staff passkey field based on user type
+        userType.addEventListener('change', () => {
+            if (userType.value === 'staff') {
+                staffPasskeyContainer.classList.remove('hidden');
+            } else {
+                staffPasskeyContainer.classList.add('hidden');
+            }
+        });
+
+        // Error modal handling
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorModal.classList.remove('hidden');
+        }
+
+        closeErrorModal.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+
+        errorModalOk.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+
+        // Success modal handling
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successModal.classList.remove('hidden');
+        }
+
+        closeSuccessModal.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+        successModalOk.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+        // Forgot password modal handling
+        forgotPassword.addEventListener('click', () => {
+            forgotModal.classList.remove('hidden');
+        });
+
+        closeForgotModal.addEventListener('click', () => {
+            forgotModal.classList.add('hidden');
+        });
+
+        sendResetLink.addEventListener('click', () => {
+            const email = document.getElementById('forgot-email').value.trim();
+            
+            if (!email) {
+                showError('Please enter your email address');
+                return;
+            }
+            
+            // In a real app, you would send a reset link to the email
+            forgotModal.classList.add('hidden');
+            showSuccess('An email with reset instructions has been sent to your address');
+        });
+
+        // Passkey modal handling
+        function showPasskeyModal() {
+            passkeyModal.classList.remove('hidden');
+        }
+
+        closePasskeyModal.addEventListener('click', () => {
+            passkeyModal.classList.add('hidden');
+        });
+
+        verifyPasskey.addEventListener('click', () => {
+            const passkey = document.getElementById('login-passkey').value;
+            const correctPasskey = 'XunEnergy'; // The required passkey
+            
+            if (passkey === correctPasskey) {
+                passkeyModal.classList.add('hidden');
+                // Redirect to appropriate page after successful passkey verification
+                window.location.href = 'LandingPage.html';
+            } else {
+                showError('Invalid passkey. Please try again.');
+                passkeyModal.classList.add('hidden');
+            }
+        });
+
+        // Login functionality
+        loginButton.addEventListener('click', () => {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            if (!username || !password) {
+                showError('Please enter both username/email and password');
+                loginForm.classList.add('shake');
+                setTimeout(() => loginForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            // Check if user exists
+            const user = userAccounts.find(account => 
+                (account.username === username || account.email === username) && 
+                account.password === password
+            );
+
+            if (user) {
+                if (user.type === 'staff') {
+                    // Show passkey modal for staff
+                    showPasskeyModal();
+                } else {
+                    // Redirect regular users
+                    window.location.href = user.username === 'Delight chetter' ? 
+                        'LandingPage.html' : 'LandingPage.html';
+                }
+            } else {
+                showError('Invalid username/email or password. Please try again.');
+                loginForm.classList.add('shake');
+                setTimeout(() => loginForm.classList.remove('shake'), 500);
+            }
+        });
+
+        // Signup functionality
+        signupButton.addEventListener('click', () => {
+            const username = document.getElementById('signup-username').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            const selectedType = userType.value;
+            const staffPasskey = selectedType === 'staff' ? document.getElementById('staff-passkey').value : '';
+            const termsChecked = document.getElementById('terms').checked;
+
+            // Validate inputs
+            if (!username || !email || !password || !confirmPassword) {
+                showError('Please fill in all fields');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            if (password.length < 8) {
+                showError('Password must be at least 8 characters');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            if (selectedType === 'staff' && staffPasskey !== 'XunEnergy') {
+                showError('Invalid staff passkey');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            if (!termsChecked) {
+                showError('You must agree to the terms and conditions');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            // Check if username or email already exists
+            if (userAccounts.some(account => account.username === username)) {
+                showError('Username already exists');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            if (userAccounts.some(account => account.email === email)) {
+                showError('Email already registered');
+                signupForm.classList.add('shake');
+                setTimeout(() => signupForm.classList.remove('shake'), 500);
+                return;
+            }
+
+            // Create new account
+            userAccounts.push({
+                username,
+                email,
+                password,
+                type: selectedType
+            });
+
+            // Show success message
+            showSuccess('Account created successfully! You can now login.');
+            
+            // Switch to login form
+            loginTab.click();
+            
+            // Clear form
+            document.getElementById('signup-username').value = '';
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-password').value = '';
+            document.getElementById('signup-confirm-password').value = '';
+            document.getElementById('terms').checked = false;
+            if (selectedType === 'staff') {
+                document.getElementById('staff-passkey').value = '';
+            }
+        });
+
+        // Allow form submission on Enter key
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                if (!signupForm.classList.contains('hidden')) {
+                    signupButton.click();
+                } else {
+                    loginButton.click();
+                }
+            }
+        });
+    </script>
+   
+</body>
+</html>

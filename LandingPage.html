@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xun Energy Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dark mode styles */
+        .dark {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .dark .bg-white {
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+        
+        .dark .text-gray-800 {
+            color: #ffffff;
+        }
+        
+        .dark .text-gray-700 {
+            color: #e5e5e5;
+        }
+        
+        .dark .text-gray-600 {
+            color: #d1d1d1;
+        }
+        
+        .dark .text-gray-500 {
+            color: #a0a0a0;
+        }
+        
+        .dark .border-gray-200 {
+            border-color: #404040;
+        }
+        
+        .dark .bg-gray-200 {
+            background-color: #404040;
+        }
+        
+        .dark .bg-gray-100 {
+            background-color: #333333;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #3b82f6, #10b981);
+        }
+        
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover {
+            transform: translateX(5px);
+        }
+        
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .floating-btn {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* AI Assistant styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .ai-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            max-height: 500px;
+        }
+        
+        .ai-header {
+            padding: 15px;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f9fafb;
+        }
+        
+        .ai-message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            font-size: 14px;
+        }
+        
+        .ai-user {
+            background: #e5e7eb;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .ai-bot {
+            background: white;
+            border: 1px solid #e5e7eb;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .ai-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .ai-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .ai-input button {
+            margin-left: 10px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0 15px;
+            cursor: pointer;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1s infinite ease-in-out;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Profile dropdown styles */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .profile-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .profile-dropdown-content a {
+            color: #4b5563;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .profile-dropdown-content a:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .profile-dropdown:hover .profile-dropdown-content {
+            display: block;
+        }
+        
+        .dark .profile-dropdown-content {
+            background-color: #2d2d2d;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+        }
+        
+        .dark .profile-dropdown-content a {
+            color: #e5e7eb;
+        }
+        
+        .dark .profile-dropdown-content a:hover {
+            background-color: #404040;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-gradient-to-b from-gray-900 to-gray-800">
+                <div class="flex items-center h-16 px-4 border-b border-gray-700">
+                    <div class="flex items-center">
+                        <i class="fas fa-bolt text-green-400 mr-3 text-xl"></i>
+                        <span class="text-white font-bold text-xl">Xun Energy Academy </span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-6 overflow-y-auto">
+                    <nav class="flex-1 space-y-2">
+                        <a href="#" onclick="showSection('dashboard')" class="sidebar-link flex items-center w-full px-4 py-3 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-all">
+                            <i class="fas fa-home mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="exam.html" onclick="showSection('test')" class="sidebar-link flex items-center w-full px-4 py-3 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-all">
+                            <i class="fas fa-book mr-3"></i>
+                            Take Test
+                        </a>
+                        <a href="#" onclick="showSection('career')" class="sidebar-link flex items-center w-full px-4 py-3 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-all">
+                            <i class="fas fa-briefcase mr-3"></i>
+                            Career Guidance
+                        </a>
+                        <a href="#" onclick="showSection('entrepreneur')" class="sidebar-link flex items-center w-full px-4 py-3 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-all">
+                            <i class="fas fa-rocket mr-3"></i>
+                            Entrepreneurship
+                        </a>
+                        <a href="#" onclick="showSection('results')" class="sidebar-link flex items-center w-full px-4 py-3 text-sm font-medium text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-all">
+                            <i class="fas fa-chart-bar mr-3"></i>
+                            Results
+                        </a>
+                    </nav>
+                    <div class="mt-auto pt-6">
+                        <div class="px-4 py-3 bg-gray-800 rounded-lg">
+                            <p class="text-xs text-gray-400">Need help?</p>
+                            <a href="#" class="text-sm text-white font-medium">Contact admin@xunenergy.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile sidebar -->
+        <div class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 z-10">
+            <div class="flex justify-around items-center h-16">
+                <a href="#" onclick="showSection('dashboard')" class="flex flex-col items-center justify-center text-gray-300 hover:text-white p-2">
+                    <i class="fas fa-home"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a href="#" onclick="showSection('test')" class="flex flex-col items-center justify-center text-gray-300 hover:text-white p-2">
+                    <i class="fas fa-book"></i>
+                    <span class="text-xs mt-1">Test</span>
+                </a>
+                <a href="404.html" onclick="showSection('career')" class="flex flex-col items-center justify-center text-gray-300 hover:text-white p-2">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="text-xs mt-1">Career</span>
+                </a>
+                <a href="404.html" onclick="showSection('results')" class="flex flex-col items-center justify-center text-gray-300 hover:text-white p-2">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="text-xs mt-1">Results</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section p-6 animate-fade-in">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex items-center justify-between mb-8">
+                        <h1 class="text-3xl font-bold text-gray-800">Welcome back, <span class="gradient-text">Learner!</span></h1>
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <div class="absolute inset-0 bg-blue-100 rounded-full opacity-75 animate-pulse"></div>
+                                <div class="relative w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="profile-dropdown">
+                                <button class="font-medium hover:text-blue-600 transition-colors" id="userName">Delight Chetter</button>
+                                <div class="profile-dropdown-content">
+                                    <a href="edit.html"><i class="fas fa-user-circle mr-2"></i> View Profile</a>
+                                    <a href="edit.html"><i class="fas fa-edit mr-2"></i> Edit Profile</a>
+                                    <a href="login2.html" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-gray-700">Your Progress</h3>
+                                <i class="fas fa-chart-line text-blue-500"></i>
+                            </div>
+                            <div class="mt-4">
+                                <div class="relative w-full h-4 bg-gray-200 rounded-full">
+                                    <div class="absolute top-0 left-0 h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full" style="width: 45%"></div>
+                                </div>
+                                <p class="mt-2 text-sm text-gray-500">45% completed</p>
+                            </div>
+                        </div>
+                                                
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-gray-700">Current Streak</h3>
+                                <i class="fas fa-fire text-orange-500"></i>
+                            </div>
+                            <div class="mt-4 flex items-center">
+                                <span class="text-3xl font-bold text-gray-800">7</span>
+                                <span class="ml-2 text-gray-500">days</span>
+                            </div>
+                        </div>
+                                                
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-gray-700">Upcoming Tests</h3>
+                                <i class="fas fa-calendar-alt text-purple-500"></i>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm text-gray-800 font-medium">Renewable Energy Basics</p>
+                                <p class="text-xs text-gray-500">Tomorrow at 10:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-800">Recommended Courses</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+                            <div class="p-6">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-4">
+                                        <i class="fas fa-solar-panel text-xl"></i>
+                                    </div>
+                                    <h4 class="font-medium">Solar Energy</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Master the fundamentals of photovoltaic systems and solar thermal energy.</p>
+                                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-800">Start Learning</a>
+                            </div>
+                                                        
+                            <div class="p-6">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                                        <i class="fas fa-wind text-xl"></i>
+                                    </div>
+                                    <h4 class="font-medium">Wind Power</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Learn about turbine technology, wind farm design, and energy conversion.</p>
+                                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-800">Start Learning</a>
+                            </div>
+                                                        
+                            <div class="p-6">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-4">
+                                        <i class="fas fa-battery-three-quarters text-xl"></i>
+                                    </div>
+                                    <h4 class="font-medium">Energy Storage</h4>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4">Explore battery technologies and grid-scale energy storage solutions.</p>
+                                <a href="404.html" class="text-sm font-medium text-blue-600 hover:text-blue-800">Start Learning</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-800">Recent Activity</h3>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            <div class="p-4 flex items-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Completed "Energy Efficiency Basics"</p>
+                                    <p class="text-xs text-gray-500">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-center">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-4">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Achieved "Energy Explorer" badge</p>
+                                    <p class="text-xs text-gray-500">Yesterday</p>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-center">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-4">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium">Started "Renewable Energy 101"</p>
+                                    <p class="text-xs text-gray-500">3 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <!-- Test Section -->
+            <div id="test" class="section hidden p-6">
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center mb-8">
+                        <h1 class="text-2xl font-bold text-gray-800">Energy Knowledge Assessment</h1>
+                        <div id="timer" class="bg-gray-800 text-white px-4 py-2 rounded-lg font-mono">
+                            60:00
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <div>
+                                <span class="text-sm font-medium text-gray-500">Question</span>
+                                <span id="question-counter" class="text-sm font-medium text-gray-800">1 of 10</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-yellow-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                <span class="text-sm font-medium">Hard</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 id="question-text" class="text-lg font-medium text-gray-800 mb-6">
+                                What is the primary advantage of photovoltaic solar panels compared to concentrated solar power (CSP) systems?
+                            </h3>
+                            
+                            <div id="options-container" class="space-y-3">
+                                <div class="option-card p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-all">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0"></div>
+                                        <p class="text-gray-800">They can generate electricity at night</p>
+                                    </div>
+                                </div>
+                                <div class="option-card p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-all">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0"></div>
+                                        <p class="text-gray-800">They require less maintenance</p>
+                                    </div>
+                                </div>
+                                <div class="option-card p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-all">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0"></div>
+                                        <p class="text-gray-800">They can be installed at any scale from small to large</p>
+                                    </div>
+                                </div>
+                                <div class="option-card p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-all">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0"></div>
+                                        <p class="text-gray-800">They are more efficient at converting sunlight to electricity</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <a href="404.html" id="prev-btn" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all disabled:opacity-50" disabled>
+                            <i class="fas fa-arrow-left mr-2"></i> Previous
+                        </a>
+                        <a href="#" id="next-btn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-lg font-medium text-gray-800 mb-4">Test Progress</h3>
+                        <div class="grid grid-cols-5 gap-2">
+                            <div class="h-2 rounded bg-blue-500"></div>
+                            <div class="h-2 rounded bg-blue-500"></div>
+                            <div class="h-2 rounded bg-blue-300"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                            <div class="h-2 rounded bg-gray-200"></div>
+                        </div>
+                        <div class="mt-4 flex justify-between text-sm text-gray-600">
+                            <span>2 answered</span>
+                            <span>8 remaining</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <!-- Career Guidance Section -->
+            <div id="career" class="section hidden p-6">
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-8">Career Pathways in Energy</h1>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-4">
+                                        <i class="fas fa-solar-panel text-xl"></i>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-800">Solar Energy Technician</h2>
+                                </div>
+                                <p class="text-gray-600 mb-4">Install, maintain, and repair solar photovoltaic (PV) systems on rooftops or other structures.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full"></span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">High Demand</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Certification Required</span>
+                                </div>
+                                <a href="404.html" class="text-blue-600 font-medium hover:text-blue-800">Explore Training <i class="fas fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+                                                
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
+                                        <i class="fas fa-wind text-xl"></i>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-800">Wind Turbine Technician</h2>
+                                </div>
+                                <p class="text-gray-600 mb-4">Install, maintain, and repair wind turbines, often working at great heights.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">R50,000 - R80,000</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Rapid Growth</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Technical Training</span>
+                                </div>
+                                <a href="404.html" class="text-blue-600 font-medium hover:text-blue-800">Explore Training <i class="fas fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+                                                
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text yellow-600 mr-4">
+                                        <i class="fas fa-lightbulb text-xl"></i>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-800">Energy Efficiency Consultant</h2>
+                                </div>
+                                <p class="text-gray-600 mb-4">Assess energy use and recommend improvements to reduce consumption and costs.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">R55,000 - R90,000</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Office/Field Work</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Analytical Skills</span>
+                                </div>
+                                <a href="404.html" class="text-blue-600 font-medium hover:text-blue-800">Explore Training <i class="fas fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+                                                
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-4">
+                                        <i class="fas fa-bolt text-xl"></i>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-800">Energy Storage Specialist</h2>
+                                </div>
+                                <p class="text-gray-600 mb-4">Work with battery systems and other energy storage technologies for grid applications.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">R60,000 - R100,000</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Emerging Field</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Engineering Background</span>
+                                </div>
+                                <a href="404.html" class="text-blue-600 font-medium hover:text-blue-800">Explore Training <i class="fas fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Career Assessment Tool</h2>
+                            <p class="text-gray-600 mb-6">Take our short assessment to discover which energy career path best matches your skills and interests.</p>
+                            <a href="exam.html" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                                Start Assessment <i class="fas fa-play ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Success Stories</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="flex items-start">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Maria" class="w-16 h-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">Maria Gonzalez</h3>
+                                        <p class="text-sm text-gray-500 mb-2">Solar Installation Supervisor</p>
+                                        <p class="text-gray-600 text-sm">"After completing the Xun Energy certification program, I went from an entry-level installer to supervising teams within two years. The hands-on training was exactly what I needed."</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James" class="w-16 h-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <h3 class="font-medium text-gray-800">James Wilson</h3>
+                                        <p class="text-sm text-gray-500 mb-2">Wind Farm Technician</p>
+                                        <p class="text-gray-600 text-sm">"The wind energy training program opened doors I didn't know existed. Now I travel to different states maintaining turbines, with great pay and benefits."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <!-- Entrepreneurship Section -->
+            <div id="entrepreneur" class="section hidden p-6">
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-8">Energy Entrepreneurship</h1>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <div class="p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-4">
+                                    <i class="fas fa-lightbulb text-xl"></i>
+                                </div>
+                                <h2 class="text-xl font-bold text-gray-800">Start Your Energy Business</h2>
+                                </div>
+                                <p class="text-gray-600 mb-6">The renewable energy sector offers countless opportunities for entrepreneurs. Whether you're interested in installation, consulting, or innovative technologies, we'll help you get started.</p>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                    <div class="p-4 border border-gray-200 rounded-lg">
+                                        <h3 class="font-medium text-gray-800 mb-2">1. Identify Your Niche</h3>
+                                        <p class="text-sm text-gray-600">Solar installation, energy auditing, EV charging stations, or specialized consulting.</p>
+                                    </div>
+                                    <div class="p-4 border border-gray-200 rounded-lg">
+                                        <h3 class="font-medium text-gray-800 mb-2">2. Get Certified</h3>
+                                        <p class="text-sm text-gray-600">Complete our entrepreneur track to gain credibility and technical knowledge.</p>
+                                    </div>
+                                    <div class="p-4 border border-gray-200 rounded-lg">
+                                        <h3 class="font-medium text-gray-800 mb-2">3. Access Funding</h3>
+                                        <p class="text-sm text-gray-600">Connect with our network of green investors and grant programs.</p>
+                                    </div>
+                                </div>
+                                
+                                <a href="entrepreneurship.html" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                                    Explore Entrepreneur Program <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-4">Business Models</h2>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-3 flex-shrink-0">
+                                                <i class="fas fa-home"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Residential Solar</h3>
+                                                <p class="text-sm text-gray-600">Install systems for homeowners with various financing options.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 mr-3 flex-shrink-0">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Commercial Energy Audits</h3>
+                                                <p class="text-sm text-gray-600">Help businesses reduce energy costs and improve efficiency.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mr-3 flex-shrink-0">
+                                                <i class="fas fa-charging-station"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">EV Charging Stations</h3>
+                                                <p class="text-sm text-gray-600">Install and maintain charging infrastructure for electric vehicles.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                        
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-4">Success Stories</h2>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sarah" class="w-12 h-12 rounded-full object-cover mr-3 flex-shrink-0">
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Sarah Johnson</h3>
+                                                <p class="text-sm text-gray-500 mb-1">Founder, GreenHome Solutions</p>
+                                                <p class="text-sm text-gray-600">"Started with just two employees, now we have a team of 15 serving the entire metro area. The Xun Energy mentorship program was invaluable."</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Michael" class="w-12 h-12 rounded-full object-cover mr-3 flex-shrink-0">
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Michael Chen</h3>
+                                                <p class="text-sm text-gray-500 mb-1">CEO, ChargeForward</p>
+                                                <p class="text-sm text-gray-600">"We've installed over 200 EV charging stations in the past year. The market is growing faster than we anticipated!"</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <h2 class="text-xl font-bold text-gray-800 mb-4">Upcoming Events</h2>
+                                <div class="space-y-4">
+                                    <div class="p-4 border border-gray-200 rounded-lg">
+                                        <div class="flex items-start">
+                                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mr-4 flex-shrink-0">
+                                                <i class="fas fa-calendar-day"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Green Business Pitch Competition</h3>
+                                                <p class="text-sm text-gray-500 mb-1">June 15, 2023 | Virtual</p>
+                                                <p class="text-sm text-gray-600">Pitch your energy startup idea to investors for a chance to win funding.</p>
+                                                <a href="#" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Register Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 border border-gray-200 rounded-lg">
+                                        <div class="flex items-start">
+                                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mr-4 flex-shrink-0">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-medium text-gray-800">Renewable Energy Networking Mixer</h3>
+                                                <p class="text-sm text-gray-500 mb-1">July 8, 2023 | Chicago</p>
+                                                <p class="text-sm text-gray-600">Connect with other entrepreneurs, investors, and industry experts.</p>
+                                                <a href="404.html" class="mt-2 text-sm text-blue-600 hover:text-blue-800">Learn More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                    
+                    <!-- Results Section -->
+                    <div id="results" class="section hidden p-6">
+                        <div class="max-w-4xl mx-auto">
+                            <h1 class="text-3xl font-bold text-gray-800 mb-8">Your Certification Results</h1>
+                            
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                                <div class="p-6">
+                                    <div class="flex flex-col md:flex-row items-center mb-6">
+                                        <div class="relative mb-4 md:mb-0 md:mr-6">
+                                            <svg class="w-32 h-32" viewBox="0 0 36 36">
+                                                <path d="M18 2.0845
+                                                  a 15.9155 15.9155 0 0 1 0 31.831
+                                                  a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                  fill="none"
+                                                  stroke="#e6e6e6"
+                                                  stroke-width="2"
+                                                  stroke-dasharray="100, 100"
+                                                />
+                                                <path d="M18 2.0845
+                                                  a 15.9155 15.9155 0 0 1 0 31.831
+                                                  a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                  fill="none"
+                                                  stroke="#3b82f6"
+                                                  stroke-width="2"
+                                                  stroke-dasharray="85, 100"
+                                                />
+                                                <text x="18" y="20.5" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">85%</text>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h2 class="text-2xl font-bold text-gray-800 mb-2">Renewable Energy Professional</h2>
+                                            <p class="text-gray-600 mb-4">Completed on June 10, 2023</p>
+                                            <div class="flex flex-wrap gap-2 mb-4">
+                                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">Distinction</span>
+                                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Certified</span>
+                                                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Level 2</span>
+                                            </div>
+                                            <p class="text-gray-600">You scored in the top 15% of all test takers. Excellent work!</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="border-t border-gray-200 pt-6">
+                                        <h3 class="text-lg font-medium text-gray-800 mb-4">Performance Breakdown</h3>
+                                        <div class="space-y-4">
+                                            <div>
+                                                <div class="flex justify-between mb-1">
+                                                    <span class="text-sm font-medium text-gray-700">Solar Energy</span>
+                                                    <span class="text-sm font-medium text-gray-700">92%</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between mb-1">
+                                                    <span class="text-sm font-medium text-gray-700">Wind Power</span>
+                                                    <span class="text-sm font-medium text-gray-700">88%</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-green-400 h-2 rounded-full" style="width: 88%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between mb-1">
+                                                    <span class="text-sm font-medium text-gray-700">Energy Storage</span>
+                                                    <span class="text-sm font-medium text-gray-700">76%</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 76%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between mb-1">
+                                                    <span class="text-sm font-medium text-gray-700">Energy Policy</span>
+                                                    <span class="text-sm font-medium text-gray-700">81%</span>
+                                                </div>
+                                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 81%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-4">Download Your Certificate</h2>
+                                    <p class="text-gray-600 mb-6">Get your official digital certificate to share with employers or add to your LinkedIn profile.</p>
+                                    <a href="404.html" onclick="downloadResults()" class="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex items-center justify-center">
+                                        <i class="fas fa-download mr-2"></i> Download Certificate
+                                    </a>
+                                </div>
+                                                            
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-4">Share Your Achievement</h2>
+                                    <p class="text-gray-600 mb-6">Let your network know about your certification success.</p>
+                                    <div class="flex space-x-3">
+                                        <a href="404.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                        <a href="404.html" class="px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-all">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                        <a href="404.html" class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-all">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-4">Submit for Official Certification</h2>
+                                    <p class="text-gray-600 mb-6">Upload your test results to receive your official Xun Energy certification.</p>
+                                    
+                                    <form id="uploadForm" class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Upload Results</label>
+                                            <div class="mt-1 flex items-center">
+                                                <label for="file-upload" class="cursor-pointer">
+                                                    <span class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                        Choose File
+                                                    </span>
+                                                    <input id="file-upload" name="file" type="file" class="sr-only" accept=".pdf,.docx,.txt" required>
+                                                </label>
+                                                <span id="file-name" class="ml-2 text-sm text-gray-500">No file chosen</span>
+                                            </div>
+                                        </div>
+                                                                        
+                                        <div>
+                                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                            <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                                                        
+                                        <div class="flex items-center">
+                                            <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                            <label for="terms" class="ml-2 block text-sm text-gray-700">
+                                                I agree to the <a href="#" class="text-blue-600 hover:text-blue-800">terms and conditions</a>
+                                            </label>
+                                        </div>
+                                                                        
+                                        <div>
+                                            <button type="submit" class="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all flex items-center justify-center">
+                                                <i class="fas fa-paper-plane mr-2"></i> Submit for Certification
+                                            </button>
+                                        </div>
+                                    </form>
+                                    
+                                    <div id="uploadStatus" class="mt-4 hidden p-4 rounded-lg bg-blue-50 text-blue-800">
+                                        <div class="flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-info-circle"></i>
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm" id="statusMessage">
+                                                    Your file is being uploaded...
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="ai-assistant">
+                <div class="ai-panel" id="aiPanel">
+                    <div class="ai-header">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-600 mr-3">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="font-medium">XunEnergy AI Assistant</h3>
+                        <button id="closeAiPanel" class="ml-auto text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="ai-messages" id="aiMessages">
+                        <div class="ai-message ai-bot">
+                            Hello! I'm your XunEnergy AI assistant. How can I help you with solar learning today?
+                        </div>
+                    </div>
+                    <div class="ai-input">
+                        <input type="text" id="aiInput" placeholder="Ask me anything about solar energy..." class="focus:ring-blue-500 focus:border-blue-500">
+                        <button id="aiSend"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <div class="ai-button" id="aiButton">
+                    <i class="fas fa-robot text-xl"></i>
+                </div>
+            </div>
+
+            <script>
+                // Show initial section
+                document.addEventListener('DOMContentLoaded', function() {
+                    showSection('dashboard');
+                    
+                    // File upload name display
+                    document.getElementById('file-upload').addEventListener('change', function(e) {
+                        const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+                        document.getElementById('file-name').textContent = fileName;
+                    });
+                    
+                    // Mock quiz functionality
+                    setupQuiz();
+                    
+                    // Setup AI assistant
+                    setupAIAssistant();
+                    
+                    // Load user name from localStorage if available
+                    const storedName = localStorage.getItem('userName');
+                    if (storedName) {
+                        document.getElementById('userName').textContent = storedName;
+                    }
+                });
+
+                function showSection(sectionId) {
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    document.getElementById(sectionId).classList.remove('hidden');
+                    
+                    // Add animation when showing a section
+                    document.getElementById(sectionId).classList.add('animate-fade-in');
+                    setTimeout(() => {
+                        document.getElementById(sectionId).classList.remove('animate-fade-in');
+                    }, 500);
+                }
+
+                function downloadResults() {
+                    alert("Certificate download would start here. This is a demo.");
+                }
+
+                function logout() {
+                    // Clear any user session data
+                    localStorage.removeItem('userName');
+                    // Redirect to login page
+                    window.location.href = 'login2.html';
+                }
+
+                function setupQuiz() {
+                    const questions = [
+                        {
+                            text: "What is the primary advantage of photovoltaic solar panels compared to concentrated solar power (CSP) systems?",
+                            options: [
+                                "They can generate electricity at night",
+                                "They require less maintenance",
+                                "They can be installed at any scale from small to large",
+                                "They are more efficient at converting sunlight to electricity"
+                            ],
+                            correct: 2
+                        },
+                        {
+                            text: "Which of these is NOT a type of solar panel technology?",
+                            options: [
+                                "Monocrystalline silicon",
+                                "Polycrystalline silicon",
+                                "Thin-film amorphous silicon",
+                                "Liquid crystal display"
+                            ],
+                            correct: 3
+                        },
+                        {
+                            text: "What is the typical efficiency range for commercial solar panels?",
+                            options: [
+                                "5-10%",
+                                "15-20%",
+                                "25-30%",
+                                "35-40%"
+                            ],
+                            correct: 1
+                        }
+                    ];
+                    
+                    let currentQuestion = 0;
+                    
+                    function displayQuestion(index) {
+                        const question = questions[index];
+                        document.getElementById('question-text').textContent = question.text;
+                        document.getElementById('question-counter').textContent = `${index + 1} of ${questions.length}`;
+                        
+                        const optionsContainer = document.getElementById('options-container');
+                        optionsContainer.innerHTML = '';
+                        
+                        question.options.forEach((option, i) => {
+                            const optionElement = document.createElement('div');
+                            optionElement.className = 'option-card p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-all';
+                            optionElement.innerHTML = `
+                                <div class="flex items-center">
+                                    <div class="w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0"></div>
+                                    <p class="text-gray-800">${option}</p>
+                                </div>
+                            `;
+                            
+                            optionElement.addEventListener('click', function() {
+                                document.querySelectorAll('.option-card').forEach(card => {
+                                    card.classList.remove('selected');
+                                });
+                                this.classList.add('selected');
+                            });
+                            
+                            optionsContainer.appendChild(optionElement);
+                        });
+                        
+                        document.getElementById('prev-btn').disabled = index === 0;
+                        document.getElementById('next-btn').disabled = index === questions.length - 1;
+                    }
+                    
+                    document.getElementById('prev-btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentQuestion > 0) {
+                            currentQuestion--;
+                            displayQuestion(currentQuestion);
+                        }
+                    });
+                    
+                    document.getElementById('next-btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (currentQuestion < questions.length - 1) {
+                            currentQuestion++;
+                            displayQuestion(currentQuestion);
+                        }
+                    });
+                    
+                    displayQuestion(0);
+                }
+
+                function setupAIAssistant() {
+                    const aiButton = document.getElementById('aiButton');
+                    const aiPanel = document.getElementById('aiPanel');
+                    const closeAiPanel = document.getElementById('closeAiPanel');
+                    const aiSend = document.getElementById('aiSend');
+                    const aiInput = document.getElementById('aiInput');
+                    const aiMessages = document.getElementById('aiMessages');
+                    
+                    aiButton.addEventListener('click', function() {
+                        aiPanel.style.display = aiPanel.style.display === 'flex' ? 'none' : 'flex';
+                    });
+                    
+                    closeAiPanel.addEventListener('click', function() {
+                        aiPanel.style.display = 'none';
+                    });
+                    
+                    function addMessage(text, isUser) {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `ai-message ${isUser ? 'ai-user' : 'ai-bot'}`;
+                        messageDiv.textContent = text;
+                        aiMessages.appendChild(messageDiv);
+                        aiMessages.scrollTop = aiMessages.scrollHeight;
+                    }
+                    
+                    function simulateTyping(callback) {
+                        const typingDiv = document.createElement('div');
+                        typingDiv.className = 'typing-indicator';
+                        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+                        aiMessages.appendChild(typingDiv);
+                        aiMessages.scrollTop = aiMessages.scrollHeight;
+                        
+                        setTimeout(() => {
+                            aiMessages.removeChild(typingDiv);
+                            callback();
+                        }, 1500);
+                    }
+                    
+                    aiSend.addEventListener('click', function() {
+                        const message = aiInput.value.trim();
+                        if (message) {
+                            addMessage(message, true);
+                            aiInput.value = '';
+                            
+                            simulateTyping(() => {
+                                // Simple responses based on keywords
+                                let response;
+                                if (message.toLowerCase().includes('solar panel') || message.toLowerCase().includes('photovoltaic')) {
+                                    response = "Solar panels, or photovoltaic (PV) panels, convert sunlight into electricity using semiconductor materials. The most common types are monocrystalline, polycrystalline, and thin-film. Would you like more details on a specific type?";
+                                } else if (message.toLowerCase().includes('wind') || message.toLowerCase().includes('turbine')) {
+                                    response = "Wind turbines convert kinetic energy from wind into mechanical power which can then be converted to electricity. Modern wind turbines typically have three blades and can be installed onshore or offshore. The average capacity is 2-3 MW.";
+                                } else if (message.toLowerCase().includes('career') || message.toLowerCase().includes('job')) {
+                                    response = "The renewable energy sector offers many career paths including solar panel installer, wind turbine technician, energy efficiency consultant, and energy storage specialist. Would you like information about training programs?";
+                                } else if (message.toLowerCase().includes('hi') || message.toLowerCase().includes('hello')) {
+                                    response = "Hello! How can I assist you with your solar energy learning today?";
+                                } else {
+                                    response = "I'm happy to help with your solar energy questions. Could you please be more specific about what information you're looking for?";
+                                }
+                                
+                                addMessage(response, false);
+                            });
+                        }
+                    });
+                    
+                    aiInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            aiSend.click();
+                        }
+                    });
+                }
+            </script>
+
+            <script>
+                // Dark mode functionality
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const darkModeIcon = document.getElementById('darkModeIcon');
+                
+                // Check for saved dark mode preference
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.documentElement.classList.add('dark');
+                    darkModeIcon.classList.remove('fa-moon');
+                    darkModeIcon.classList.add('fa-sun');
+                }
+                
+                darkModeToggle.addEventListener('click', () => {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        darkModeIcon.classList.remove('fa-sun');
+                        darkModeIcon.classList.add('fa-moon');
+                        localStorage.setItem('darkMode', 'disabled');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        darkModeIcon.classList.remove('fa-moon');
+                        darkModeIcon.classList.add('fa-sun');
+                        localStorage.setItem('darkMode', 'enabled');
+                    }
+                });
+            </script>
+        </body>
+        </html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XunEnergy - Solar Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sun-animation {
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .sun-rays {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,204,0,0.4) 0%, rgba(255,204,0,0) 70%);
+            border-radius: 50%;
+        }
+        .input-highlight {
+            transition: all 0.3s ease;
+        }
+        .input-highlight:focus {
+            box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.3);
+            border-color: #FFCC00;
+        }
+        .btn-solar {
+            background: linear-gradient(135deg, #FFCC00 0%, #FF9900 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-solar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 204, 0, 0.3);
+        }
+        .solar-panel {
+            background: linear-gradient(135deg, #333333 0%, #666666 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="absolute top-0 left-0 w-full h-16 bg-white shadow-md flex items-center px-6 z-50">
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center mr-3 relative">
+                <div class="sun-rays"></div>
+                <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">Xun<span class="text-yellow-500">Energy</span></h1>
+        </div>
+        <div class="ml-auto flex space-x-4">
+            <a href="#" class="text-gray-600 hover:text-yellow-500 transition">Home</a>
+            <a href="#" class="text-gray-600 hover:text-yellow-500 transition">Courses</a>
+            <a href="#" class="text-gray-600 hover:text-yellow-500 transition">About</a>
+            <a href="#" class="text-gray-600 hover:text-yellow-500 transition">Contact</a>
+        </div>
+    </div>
+
+    <div class="max-w-4xl w-full bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        <!-- Left Side - Solar Panel Graphic -->
+        <div class="w-full md:w-1/2 bg-gradient-to-br from-yellow-400 to-yellow-600 p-8 flex flex-col items-center justify-center text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');"></div>
+            
+            <div class="relative z-10 text-center">
+                <div class="w-32 h-32 rounded-full bg-white bg-opacity-20 flex items-center justify-center mx-auto mb-8 sun-animation">
+                    <i class="fas fa-solar-panel text-5xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">Solar Learning Platform</h2>
+                <p class="mb-6 opacity-90">Empowering the future with renewable energy education</p>
+                
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sun text-yellow-300 text-2xl"></i>
+                    </div>
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-yellow-300 text-2xl"></i>
+                    </div>
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-leaf text-yellow-300 text-2xl"></i>
+                    </div>
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-yellow-300 text-2xl"></i>
+                    </div>
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-battery-full text-yellow-300 text-2xl"></i>
+                    </div>
+                    <div class="solar-panel p-3 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-plug text-yellow-300 text-2xl"></i>
+                    </div>
+                </div>
+                
+                <p class="text-sm opacity-80">Don't have an account?</p>
+                <a href="#" id="signupBtn" class="inline-block mt-2 px-6 py-2 bg-white bg-opacity-20 rounded-full font-medium hover:bg-opacity-30 transition">Sign Up</a>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="w-full md:w-1/2 p-10 flex flex-col justify-center">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+                <p class="text-gray-600">Login to access your solar learning dashboard</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required class="input-highlight pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Enter your username">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required class="input-highlight pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Enter your password">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button type="button" class="text-gray-400 hover:text-gray-600 focus:outline-none" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-yellow-500 focus:ring-yellow-400 border-gray-300 rounded">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-yellow-600 hover:text-yellow-500">Forgot password?</a>
+                </div>
+                
+                <div>
+                    <button type="submit" class="btn-solar w-full px-6 py-3 rounded-lg text-white font-semibold shadow-md">
+                        Login <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-3 gap-3">
+                    <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-google text-red-500"></i>
+                    </a>
+                    <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-facebook-f text-blue-600"></i>
+                    </a>
+                    <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-microsoft text-blue-500"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 relative">
+            <button id="closeSignupBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-plus text-yellow-500 text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">Create Account</h2>
+                <p class="text-gray-600 mt-2">Join our solar learning community</p>
+            </div>
+            
+            <form class="space-y-4">
+                <div>
+                    <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" class="input-highlight w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Your full name">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" class="input-highlight w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="your@email.com">
+                </div>
+                
+                <div>
+                    <label for="new-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="new-username" name="new-username" class="input-highlight w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Choose a username">
+                </div>
+                
+                <div>
+                    <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="new-password" name="new-password" class="input-highlight w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Create a password">
+                </div>
+                
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" class="input-highlight w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-200" placeholder="Confirm your password">
+                </div>
+                
+                <div class="flex items-center">
+                    <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-yellow-500 focus:ring-yellow-400 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-700">
+                        I agree to the <a href="#" class="text-yellow-600 hover:text-yellow-500">Terms</a> and <a href="#" class="text-yellow-600 hover:text-yellow-500">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-solar w-full px-6 py-3 rounded-lg text-white font-semibold shadow-md mt-4">
+                    Sign Up <i class="fas fa-user-plus ml-2"></i>
+                </button>
+            </form>
+            
+            <div class="mt-4 text-center text-sm text-gray-600">
+                Already have an account? <a href="#" id="loginFromSignupBtn" class="text-yellow-600 hover:text-yellow-500 font-medium">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+        
+        // Signup modal functionality
+        const signupBtn = document.getElementById('signupBtn');
+        const signupModal = document.getElementById('signupModal');
+        const closeSignupBtn = document.getElementById('closeSignupBtn');
+        const loginFromSignupBtn = document.getElementById('loginFromSignupBtn');
+        
+        signupBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.classList.remove('hidden');
+        });
+        
+        closeSignupBtn.addEventListener('click', function() {
+            signupModal.classList.add('hidden');
+        });
+        
+        loginFromSignupBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            signupModal.classList.add('hidden');
+        });
+        
+       // Login form submission
+const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username === 'Delight chetter' && password === '20040415') {
+        // Redirect to admin dashboard (login.html)
+        alert('Redirecting to admin dashboard...');
+        window.location.href = 'LandingPage.html';
+    } else if (username === 'tumelo' && password === '20040416') {
+        // Redirect to user home page (home.html)
+        alert('Redirecting to home page...');
+        window.location.href = 'home.html';
+    } else {
+        alert('Invalid username or password. Please try again.');
+    }
+});
+
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === signupModal) {
+                signupModal.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

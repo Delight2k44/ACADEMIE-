@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Energy Quiz | Xun Energy Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .progress-bar {
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .correct-answer {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        
+        .incorrect-answer {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+        
+        #results {
+            display: none;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Quiz Container -->
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- Quiz Header -->
+            <div class="bg-blue-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-solar-panel text-white text-2xl mr-3"></i>
+                        <h1 class="text-xl font-bold text-white">Solar Energy Quiz</h1>
+                    </div>
+                    <div class="text-white font-medium">
+                        Question <span id="current-question">1</span>/30
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="px-6 py-3">
+                <div class="progress-bar">
+                    <div id="quiz-progress" class="progress" style="width: 3.33%"></div>
+                </div>
+            </div>
+            
+            <!-- Question Content -->
+            <div class="p-6">
+                <h2 id="question-text" class="text-lg font-medium text-gray-800 mb-6">
+                    Loading question...
+                </h2>
+                
+                <div id="options-container" class="space-y-3">
+                    <!-- Options will be loaded here -->
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8">
+                    <button id="prev-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-arrow-left mr-2"></i> Previous
+                    </button>
+                    <button id="next-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+                        Next <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button id="submit-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all hidden">
+                        Submit <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Results Section -->
+    <div id="results" class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-green-500 px-6 py-4">
+                <h1 class="text-xl font-bold text-white text-center">Quiz Results</h1>
+            </div>
+            
+            <div class="p-6">
+                <div class="text-center mb-8">
+                    <div class="mx-auto w-32 h-32 rounded-full flex items-center justify-center mb-4">
+                        <svg id="progress-ring" width="120" height="120" class="transform -rotate-90">
+                            <circle class="text-gray-200" stroke-width="8" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60"/>
+                            <circle id="progress-ring-circle" class="text-green-500" stroke-width="8" stroke-dasharray="326.56" stroke-dashoffset="326.56" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60"/>
+                        </svg>
+                        <div class="absolute text-4xl font-bold text-gray-800" id="score-display">85%</div>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Quiz Completed!</h2>
+                    <p class="text-gray-600">Here are your results for the Solar Energy Quiz</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">SCORE</h3>
+                        <p class="text-4xl font-bold text-gray-800" id="score-display-large">85%</p>
+                    </div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">CORRECT ANSWERS</h3>
+                        <p class="text-4xl font-bold text-gray-800" id="correct-answers">25</p>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="location.reload()" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium">
+                        <i class="fas fa-redo mr-2"></i> Take Quiz Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Solar Energy Quiz Questions
+        const questions = [
+            {
+                question: "What is the primary component that converts sunlight into electricity in photovoltaic systems?",
+                options: [
+                    "Solar inverter",
+                    "Photovoltaic cell",
+                    "Charge controller",
+                    "Battery bank"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these materials is most commonly used in commercial solar panels?",
+                options: [
+                    "Amorphous silicon",
+                    "Cadmium telluride",
+                    "Monocrystalline silicon",
+                    "Copper indium gallium selenide"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the typical efficiency range of commercial silicon solar panels?",
+                options: [
+                    "5-10%",
+                    "15-20%",
+                    "25-30%",
+                    "35-40%"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What does the term 'balance of system' refer to in solar installations?",
+                options: [
+                    "The mounting structure only",
+                    "All components except the solar panels",
+                    "The electrical wiring only",
+                    "The solar panels and inverter only"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which orientation is generally best for fixed solar panels in the northern hemisphere?",
+                options: [
+                    "Facing north",
+                    "Facing east",
+                    "Facing south",
+                    "Facing west"
+                ],
+                correctAnswer: 2,
+                category: "System Design"
+            },
+            {
+                question: "What is the purpose of a solar charge controller?",
+                options: [
+                    "To convert DC to AC power",
+                    "To prevent battery overcharging",
+                    "To track the sun's position",
+                    "To clean the solar panels automatically"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "What type of solar technology uses mirrors to concentrate sunlight?",
+                options: [
+                    "Photovoltaic systems",
+                    "Concentrated solar power",
+                    "Solar thermal collectors",
+                    "Building-integrated photovoltaics"
+                ],
+                correctAnswer: 1,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What is the main advantage of net metering for solar system owners?",
+                options: [
+                    "It provides free batteries",
+                    "It allows selling excess power back to the grid",
+                    "It reduces the need for inverters",
+                    "It eliminates the need for solar panels"
+                ],
+                correctAnswer: 1,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What does STC stand for in solar panel ratings?",
+                options: [
+                    "Solar Temperature Conditions",
+                    "Standard Test Conditions",
+                    "System Testing Configuration",
+                    "Solar Thermal Capacity"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which factor has the greatest impact on solar panel output?",
+                options: [
+                    "Panel color",
+                    "Temperature",
+                    "Tilt angle",
+                    "Sunlight intensity"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the purpose of anti-reflective coating on solar panels?",
+                options: [
+                    "To make panels more durable",
+                    "To reduce glare for neighbors",
+                    "To increase light absorption",
+                    "To protect against hail damage"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is NOT a type of solar thermal collector?",
+                options: [
+                    "Flat plate collector",
+                    "Evacuated tube collector",
+                    "Parabolic trough collector",
+                    "Polycrystalline collector"
+                ],
+                correctAnswer: 3,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What is the typical lifespan of quality solar panels?",
+                options: [
+                    "5-10 years",
+                    "10-15 years",
+                    "20-25 years",
+                    "30+ years"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What does the temperature coefficient of a solar panel indicate?",
+                options: [
+                    "How hot the panel can get",
+                    "How efficiency changes with temperature",
+                    "The melting point of panel materials",
+                    "The optimal operating temperature"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is an advantage of thin-film solar panels?",
+                options: [
+                    "Higher efficiency than silicon panels",
+                    "Better performance in low light",
+                    "Longer lifespan than silicon panels",
+                    "Lower manufacturing cost"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main purpose of a solar inverter?",
+                options: [
+                    "To store solar energy",
+                    "To convert DC to AC power",
+                    "To track the sun's movement",
+                    "To clean the solar panels"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which solar technology is best suited for space applications?",
+                options: [
+                    "Monocrystalline silicon",
+                    "Polycrystalline silicon",
+                    "Amorphous silicon",
+                    "Multi-junction cells"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the primary benefit of bifacial solar panels?",
+                options: [
+                    "They can generate power from both sides",
+                    "They require less space",
+                    "They don't need inverters",
+                    "They work better in cold climates"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main challenge with solar energy?",
+                options: [
+                    "It's too expensive",
+                    "It's not renewable",
+                    "It's intermittent",
+                    "It causes pollution"
+                ],
+                correctAnswer: 2,
+                category: "Policy & Economics"
+            },
+            {
+                question: "Which country leads the world in solar energy production?",
+                options: [
+                    "United States",
+                    "Germany",
+                    "China",
+                    "Japan"
+                ],
+                correctAnswer: 2,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What is the purpose of a solar tracker?",
+                options: [
+                    "To follow the sun's path",
+                    "To measure solar radiation",
+                    "To clean the panels automatically",
+                    "To store excess energy"
+                ],
+                correctAnswer: 0,
+                category: "System Design"
+            },
+            {
+                question: "Which of these is a passive solar technology?",
+                options: [
+                    "Solar water heater",
+                    "Photovoltaic panel",
+                    "Trombe wall",
+                    "Solar-powered calculator"
+                ],
+                correctAnswer: 2,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What does LCOE stand for in solar energy economics?",
+                options: [
+                    "Levelized Cost of Electricity",
+                    "Low Carbon Output Estimate",
+                    "Long-term Capacity of Energy",
+                    "Local Consumption of Energy"
+                ],
+                correctAnswer: 0,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What is the typical voltage of a single silicon solar cell?",
+                options: [
+                    "0.5V",
+                    "1.5V",
+                    "3.0V",
+                    "12V"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which factor does NOT affect solar panel performance?",
+                options: [
+                    "Shading",
+                    "Dust accumulation",
+                    "Panel color",
+                    "Temperature"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main advantage of microinverters over string inverters?",
+                options: [
+                    "Lower upfront cost",
+                    "Better performance with shading",
+                    "Longer lifespan",
+                    "Higher efficiency in cold weather"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which solar technology is best for portable applications?",
+                options: [
+                    "Thin-film",
+                    "Monocrystalline",
+                    "Polycrystalline",
+                    "Concentrated PV"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the purpose of a bypass diode in solar panels?",
+                options: [
+                    "To prevent reverse current flow",
+                    "To increase voltage output",
+                    "To track maximum power point",
+                    "To regulate temperature"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is a measure of solar panel efficiency?",
+                options: [
+                    "Watts per square meter",
+                    "Kilowatt-hours per day",
+                    "Volts per cell",
+                    "Amps per hour"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main benefit of floating solar farms?",
+                options: [
+                    "Higher efficiency than ground-mounted",
+                    "Reduced land use",
+                    "Lower installation cost",
+                    "Better performance in cold climates"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            }
+        ];
+
+        // Quiz State Variables
+        let currentQuestionIndex = 0;
+        let userAnswers = Array(questions.length).fill(null);
+        let quizSubmitted = false;
+
+        // DOM Elements
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const currentQuestionEl = document.getElementById('current-question');
+        const quizProgressEl = document.getElementById('quiz-progress');
+        const resultsEl = document.getElementById('results');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const scoreDisplayLargeEl = document.getElementById('score-display-large');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const progressRingCircle = document.getElementById('progress-ring-circle');
+
+        // Event Listeners
+        prevBtn.addEventListener('click', showPreviousQuestion);
+        nextBtn.addEventListener('click', showNextQuestion);
+        submitBtn.addEventListener('click', submitQuiz);
+
+        // Initialize the quiz
+        loadQuestion(currentQuestionIndex);
+
+        // Load a question
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Add new options
+            question.options.forEach((option, i) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = `option-card p-4 border border-gray-200 rounded-lg cursor-pointer transition-all ${
+                    userAnswers[index] === i ? 'selected' : ''
+                }`;
+                optionEl.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border ${
+                            userAnswers[index] === i ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                        } mr-3 flex-shrink-0 flex items-center justify-center">
+                            ${userAnswers[index] === i ? '<i class="fas fa-check text-white text-xs"></i>' : ''}
+                        </div>
+                        <p class="text-gray-800">${option}</p>
+                    </div>
+                `;
+                
+                optionEl.addEventListener('click', () => selectAnswer(index, i));
+                optionsContainerEl.appendChild(optionEl);
+            });
+            
+            // Update navigation buttons
+            currentQuestionEl.textContent = index + 1;
+            prevBtn.disabled = index === 0;
+            
+            // Update progress bar
+            quizProgressEl.style.width = `${((index + 1) / questions.length) * 100}%`;
+            
+            // Show submit button on last question
+            if (index === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        // Select an answer
+        function selectAnswer(questionIndex, optionIndex) {
+            if (quizSubmitted) return;
+            
+            userAnswers[questionIndex] = optionIndex;
+            
+            // Update the selected option visually
+            const options = document.querySelectorAll('#options-container .option-card');
+            options.forEach((option, i) => {
+                if (i === optionIndex) {
+                    option.classList.add('selected');
+                    option.querySelector('div div').className = 'w-6 h-6 rounded-full border border-blue-500 bg-blue-500 mr-3 flex-shrink-0 flex items-center justify-center';
+                    option.querySelector('div div').innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
+                } else {
+                    option.classList.remove('selected');
+                    option.querySelector('div div').className = 'w-6 h-6 rounded-full border border-gray-300 mr-3 flex-shrink-0';
+                    option.querySelector('div div').innerHTML = '';
+                }
+            });
+        }
+
+        // Show previous question
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Show next question
+        function showNextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Submit the quiz
+        function submitQuiz() {
+            if (quizSubmitted) return;
+            quizSubmitted = true;
+            
+            // Calculate score
+            const correctAnswers = questions.reduce((count, question, index) => {
+                return count + (userAnswers[index] === question.correctAnswer ? 1 : 0);
+            }, 0);
+            
+            const score = Math.round((correctAnswers / questions.length) * 100);
+            
+            // Display results
+            document.querySelector('.max-w-3xl').style.display = 'none';
+            resultsEl.style.display = 'block';
+            
+            // Update progress ring
+            const circumference = 2 * Math.PI * 52;
+            const offset = circumference - (score / 100) * circumference;
+            progressRingCircle.style.strokeDashoffset = offset;
+            
+            scoreDisplayEl.textContent = `${score}%`;
+            scoreDisplayLargeEl.textContent = `${score}%`;
+            correctAnswersEl.textContent = correctAnswers;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Energy Knowledge Test | Xun Energy Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        #timer.flashing {
+            animation: flash 1s infinite;
+        }
+        
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        #results {
+            display: none;
+        }
+        
+        .correct-answer {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        
+        .incorrect-answer {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+        
+        .certificate-badge {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .start-btn {
+            animation: pulse 2s infinite;
+        }
+        
+        .category-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .category-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        .sun-icon {
+            animation: spin 20s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-solar-panel text-green-500 text-2xl mr-3 sun-icon"></i>
+                    <h1 class="text-xl font-bold text-gray-800">Xun Energy Academy</h1>
+                </div>
+                <div id="timer" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-4 py-2 rounded-lg font-mono text-lg shadow-md">
+                    45:00
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <!-- Test Instructions -->
+            <div id="instructions" class="bg-white rounded-xl shadow-lg p-8 mb-8 animate-fade-in relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-40 h-40 bg-blue-100 rounded-full opacity-30"></div>
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-green-100 rounded-full opacity-30"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-sun text-yellow-400 mr-3"></i>
+                        Solar Energy Knowledge Test
+                    </h2>
+                    <div class="prose prose-gray max-w-none">
+                        <p class="text-gray-600 mb-6 text-lg">This comprehensive test evaluates your understanding of solar energy technologies, applications, and principles. You'll have 45 minutes to answer 30 multiple-choice questions.</p>
+                        
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-400 p-4 mb-6 rounded-r-lg">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-blue-800">
+                                        <strong class="font-semibold">Important:</strong> A minimum score of 75% (23 correct answers) is required to pass this certification assessment.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-semibold text-gray-800 mb-3 text-lg">Test Guidelines:</h3>
+                        <ul class="list-disc pl-5 space-y-2 mb-6 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-ban text-red-400 mr-2 mt-1"></i>
+                                <span>Page refresh will reset your progress</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-400 mr-2 mt-1"></i>
+                                <span>Complete all questions before submission</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-arrow-right text-blue-400 mr-2 mt-1"></i>
+                                <span>Forward navigation only (no backtracking)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-clock text-purple-400 mr-2 mt-1"></i>
+                                <span>Timer continues even if you leave the page</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-8 text-center">
+                            <a href="h.html" id="start-test-btn" class="start-btn px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl cursor-pointer inline-block text-center">
+                                Begin Assessment <i class="fas fa-play ml-3"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <!-- Test Content -->
+            <div id="test-content" class="hidden">
+                <!-- Progress Bar -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-medium text-gray-700">
+                            <i class="fas fa-spinner text-blue-500 mr-1"></i>
+                            Progress: <span id="progress-count" class="font-semibold">1</span>/30
+                        </span>
+                        <span class="text-sm font-medium text-gray-700" id="time-remaining">
+                            <i class="fas fa-clock text-blue-500 mr-1"></i>
+                            <span class="font-semibold">44:15</span> remaining
+                        </span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300" style="width: 3%"></div>
+                    </div>
+                </div>
+                                
+                <!-- Question Container -->
+                <div id="question-container" class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
+                    <div class="p-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-sm font-medium text-gray-500">
+                                <i class="fas fa-question-circle text-blue-400 mr-1"></i>
+                                Question <span id="current-question" class="font-semibold">1</span> of 30
+                            </span>
+                            <span id="question-category" class="text-xs px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium category-tag">
+                                Solar Energy Basics
+                            </span>
+                        </div>
+                                                
+                        <h3 id="question-text" class="text-xl font-semibold text-gray-800 mb-8 leading-relaxed">
+                            Loading question...
+                        </h3>
+                                                
+                        <div id="options-container" class="space-y-4">
+                            <!-- Options will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                                
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow" disabled>
+                        <i class="fas fa-arrow-left mr-2"></i> Previous
+                    </button>
+                    <button id="next-btn" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all font-medium shadow hover:shadow-md">
+                        Next <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button id="submit-btn" class="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all font-medium shadow hover:shadow-md hidden">
+                        Submit Test <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+            </div>
+                        
+            <!-- Results Section -->
+            <div id="results" class="hidden bg-white rounded-xl shadow-xl p-8 animate-fade-in relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-40 h-40 bg-blue-100 rounded-full opacity-20"></div>
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-green-100 rounded-full opacity-20"></div>
+                
+                <div class="relative z-10">
+                    <div class="text-center mb-10">
+                        <div class="mx-auto w-40 h-40 rounded-full flex items-center justify-center mb-6 relative">
+                            <div class="absolute inset-0 bg-blue-100 rounded-full opacity-30"></div>
+                            <svg id="progress-ring" width="160" height="160" class="transform -rotate-90">
+                                <circle class="text-gray-200" stroke-width="10" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
+                                <circle id="progress-ring-circle" class="text-green-500" stroke-width="10" stroke-dasharray="439.6" stroke-dashoffset="439.6" stroke-linecap="round" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
+                            </svg>
+                            <div class="absolute text-5xl font-bold text-gray-800" id="score-display">85%</div>
+                        </div>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-3">Assessment Complete!</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Your detailed results for the Solar Energy Knowledge Test are ready</p>
+                    </div>
+                                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                    <i class="fas fa-star text-blue-500 text-xl"></i>
+                                </div>
+                                <h3 class="text-sm font-medium text-gray-500">SCORE</h3>
+                            </div>
+                            <p class="text-5xl font-bold text-gray-800" id="score-display-large">85%</p>
+                        </div>
+                                        
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                </div>
+                                <h3 class="text-sm font-medium text-gray-500">CORRECT ANSWERS</h3>
+                            </div>
+                            <p class="text-5xl font-bold text-gray-800" id="correct-answers">25</p>
+                        </div>
+                                        
+                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+                            <div class="flex items-center mb-3">
+                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                                    <i class="fas fa-award text-yellow-500 text-xl"></i>
+                                </div>
+                                <h3 class="text-sm font-medium text-gray-500">RESULT</h3>
+                            </div>
+                            <p class="text-5xl font-bold text-green-600" id="result-status">PASSED</p>
+                        </div>
+                    </div>
+                                    
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-8 mb-10 shadow-sm">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                            <i class="fas fa-chart-bar text-blue-500 mr-3"></i>
+                            Performance Breakdown
+                        </h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-base font-medium text-gray-700 flex items-center">
+                                        <i class="fas fa-solar-panel text-blue-400 mr-2"></i>
+                                        Photovoltaic Systems
+                                    </span>
+                                    <span class="text-base font-medium text-gray-700"><span id="pv-correct">8</span>/10</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div id="pv-progress" class="bg-gradient-to-r from-blue-400 to-blue-500 h-3 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-base font-medium text-gray-700 flex items-center">
+                                        <i class="fas fa-fire text-orange-400 mr-2"></i>
+                                        Solar Thermal
+                                    </span>
+                                    <span class="text-base font-medium text-gray-700"><span id="thermal-correct">7</span>/8</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div id="thermal-progress" class="bg-gradient-to-r from-orange-400 to-orange-500 h-3 rounded-full" style="width: 87.5%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-base font-medium text-gray-700 flex items-center">
+                                        <i class="fas fa-ruler-combined text-yellow-400 mr-2"></i>
+                                        System Design
+                                    </span>
+                                    <span class="text-base font-medium text-gray-700"><span id="design-correct">6</span>/8</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div id="design-progress" class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-base font-medium text-gray-700 flex items-center">
+                                        <i class="fas fa-landmark text-purple-400 mr-2"></i>
+                                        Policy & Economics
+                                    </span>
+                                    <span class="text-base font-medium text-gray-700"><span id="policy-correct">4</span>/4</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div id="policy-progress" class="bg-gradient-to-r from-purple-400 to-purple-500 h-3 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-graduation-cap text-blue-500 mr-3"></i>
+                                What's Next?
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-lg" id="next-steps-message">
+                                Congratulations on passing the Solar Energy Knowledge Test! You're now eligible to enroll in our Advanced Solar Technologies course.
+                            </p>
+                            <button class="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all font-medium shadow hover:shadow-md">
+                                View Recommended Courses <i class="fas fa-arrow-right ml-3"></i>
+                            </button>
+                        </div>
+                                        
+                        <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all relative">
+                            <div class="absolute -top-4 -right-4 w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center certificate-badge">
+                                <i class="fas fa-certificate text-yellow-500 text-4xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-trophy text-yellow-500 mr-3"></i>
+                                Download Certificate
+                            </h3>
+                            <p class="text-gray-600 mb-6 text-lg">
+                                Download your official certificate of completion to showcase your solar energy expertise to employers and add to your professional portfolio.
+                            </p>
+                            <button onclick="downloadCertificate()" class="w-full px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-xl hover:from-yellow-600 hover:to-yellow-700 transition-all font-medium shadow hover:shadow-md">
+                                <i class="fas fa-download mr-3"></i> Download Certificate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <i class="fas fa-solar-panel text-green-500 text-2xl mr-3"></i>
+                        <span class="text-gray-700 font-medium">Xun Energy Academy © 2023</span>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-blue-500 transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-blue-700 transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Solar Energy Test Questions
+        const questions = [
+            {
+                question: "What is the primary component that converts sunlight into electricity in photovoltaic systems?",
+                options: [
+                    "Solar inverter",
+                    "Photovoltaic cell",
+                    "Charge controller",
+                    "Battery bank"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these materials is most commonly used in commercial solar panels?",
+                options: [
+                    "Amorphous silicon",
+                    "Cadmium telluride",
+                    "Monocrystalline silicon",
+                    "Copper indium gallium selenide"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the typical efficiency range of commercial silicon solar panels?",
+                options: [
+                    "5-10%",
+                    "15-20%",
+                    "25-30%",
+                    "35-40%"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What does the term 'balance of system' refer to in solar installations?",
+                options: [
+                    "The mounting structure only",
+                    "All components except the solar panels",
+                    "The electrical wiring only",
+                    "The solar panels and inverter only"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which orientation is generally best for fixed solar panels in the northern hemisphere?",
+                options: [
+                    "Facing north",
+                    "Facing east",
+                    "Facing south",
+                    "Facing west"
+                ],
+                correctAnswer: 2,
+                category: "System Design"
+            },
+            {
+                question: "What is the purpose of a solar charge controller?",
+                options: [
+                    "To convert DC to AC power",
+                    "To prevent battery overcharging",
+                    "To track the sun's position",
+                    "To clean the solar panels automatically"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "What type of solar technology uses mirrors to concentrate sunlight?",
+                options: [
+                    "Photovoltaic systems",
+                    "Concentrated solar power",
+                    "Solar thermal collectors",
+                    "Building-integrated photovoltaics"
+                ],
+                correctAnswer: 1,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What is the main advantage of net metering for solar system owners?",
+                options: [
+                    "It provides free batteries",
+                    "It allows selling excess power back to the grid",
+                    "It reduces the need for inverters",
+                    "It eliminates the need for solar panels"
+                ],
+                correctAnswer: 1,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What does STC stand for in solar panel ratings?",
+                options: [
+                    "Solar Temperature Conditions",
+                    "Standard Test Conditions",
+                    "System Testing Configuration",
+                    "Solar Thermal Capacity"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which factor has the greatest impact on solar panel output?",
+                options: [
+                    "Panel color",
+                    "Temperature",
+                    "Tilt angle",
+                    "Sunlight intensity"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the purpose of anti-reflective coating on solar panels?",
+                options: [
+                    "To make panels more durable",
+                    "To reduce glare for neighbors",
+                    "To increase light absorption",
+                    "To protect against hail damage"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is NOT a type of solar thermal collector?",
+                options: [
+                    "Flat plate collector",
+                    "Evacuated tube collector",
+                    "Parabolic trough collector",
+                    "Polycrystalline collector"
+                ],
+                correctAnswer: 3,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What is the typical lifespan of quality solar panels?",
+                options: [
+                    "5-10 years",
+                    "10-15 years",
+                    "20-25 years",
+                    "30+ years"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What does the temperature coefficient of a solar panel indicate?",
+                options: [
+                    "How hot the panel can get",
+                    "How efficiency changes with temperature",
+                    "The melting point of panel materials",
+                    "The optimal operating temperature"
+                ],
+                correctAnswer: 1,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is an advantage of thin-film solar panels?",
+                options: [
+                    "Higher efficiency than silicon panels",
+                    "Better performance in low light",
+                    "Longer lifespan than silicon panels",
+                    "Lower manufacturing cost"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main purpose of a solar inverter?",
+                options: [
+                    "To store solar energy",
+                    "To convert DC to AC power",
+                    "To track the sun's movement",
+                    "To clean the solar panels"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which solar technology is best suited for space applications?",
+                options: [
+                    "Monocrystalline silicon",
+                    "Polycrystalline silicon",
+                    "Amorphous silicon",
+                    "Multi-junction cells"
+                ],
+                correctAnswer: 3,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the primary benefit of bifacial solar panels?",
+                options: [
+                    "They can generate power from both sides",
+                    "They require less space",
+                    "They don't need inverters",
+                    "They work better in cold climates"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main challenge with solar energy?",
+                options: [
+                    "It's too expensive",
+                    "It's not renewable",
+                    "It's intermittent",
+                    "It causes pollution"
+                ],
+                correctAnswer: 2,
+                category: "Policy & Economics"
+            },
+            {
+                question: "Which country leads the world in solar energy production?",
+                options: [
+                    "United States",
+                    "Germany",
+                    "China",
+                    "Japan"
+                ],
+                correctAnswer: 2,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What is the purpose of a solar tracker?",
+                options: [
+                    "To follow the sun's path",
+                    "To measure solar radiation",
+                    "To clean the panels automatically",
+                    "To store excess energy"
+                ],
+                correctAnswer: 0,
+                category: "System Design"
+            },
+            {
+                question: "Which of these is a passive solar technology?",
+                options: [
+                    "Solar water heater",
+                    "Photovoltaic panel",
+                    "Trombe wall",
+                    "Solar-powered calculator"
+                ],
+                correctAnswer: 2,
+                category: "Solar Thermal"
+            },
+            {
+                question: "What does LCOE stand for in solar energy economics?",
+                options: [
+                    "Levelized Cost of Electricity",
+                    "Low Carbon Output Estimate",
+                    "Long-term Capacity of Energy",
+                    "Local Consumption of Energy"
+                ],
+                correctAnswer: 0,
+                category: "Policy & Economics"
+            },
+            {
+                question: "What is the typical voltage of a single silicon solar cell?",
+                options: [
+                    "0.5V",
+                    "1.5V",
+                    "3.0V",
+                    "12V"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which factor does NOT affect solar panel performance?",
+                options: [
+                    "Shading",
+                    "Dust accumulation",
+                    "Panel color",
+                    "Temperature"
+                ],
+                correctAnswer: 2,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main advantage of microinverters over string inverters?",
+                options: [
+                    "Lower upfront cost",
+                    "Better performance with shading",
+                    "Longer lifespan",
+                    "Higher efficiency in cold weather"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            },
+            {
+                question: "Which solar technology is best for portable applications?",
+                options: [
+                    "Thin-film",
+                    "Monocrystalline",
+                    "Polycrystalline",
+                    "Concentrated PV"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the purpose of a bypass diode in solar panels?",
+                options: [
+                    "To prevent reverse current flow",
+                    "To increase voltage output",
+                    "To track maximum power point",
+                    "To regulate temperature"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "Which of these is a measure of solar panel efficiency?",
+                options: [
+                    "Watts per square meter",
+                    "Kilowatt-hours per day",
+                    "Volts per cell",
+                    "Amps per hour"
+                ],
+                correctAnswer: 0,
+                category: "Photovoltaic Systems"
+            },
+            {
+                question: "What is the main benefit of floating solar farms?",
+                options: [
+                    "Higher efficiency than ground-mounted",
+                    "Reduced land use",
+                    "Lower installation cost",
+                    "Better performance in cold climates"
+                ],
+                correctAnswer: 1,
+                category: "System Design"
+            }
+        ];
+
+        // Test State Variables
+        let currentQuestionIndex = 0;
+        let userAnswers = Array(questions.length).fill(null);
+        let startTime;
+        let timerInterval;
+        let timeLeft = 45 * 60; // 45 minutes in seconds
+        let testSubmitted = false;
+
+        // DOM Elements
+        const instructionsEl = document.getElementById('instructions');
+        const testContentEl = document.getElementById('test-content');
+        const resultsEl = document.getElementById('results');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const progressCountEl = document.getElementById('progress-count');
+        const currentQuestionEl = document.getElementById('current-question');
+        const progressBarEl = document.getElementById('progress-bar');
+        const timerEl = document.getElementById('timer');
+        const timeRemainingEl = document.getElementById('time-remaining');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const scoreDisplayLargeEl = document.getElementById('score-display-large');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const resultStatusEl = document.getElementById('result-status');
+        const nextStepsMessageEl = document.getElementById('next-steps-message');
+        const pvCorrectEl = document.getElementById('pv-correct');
+        const thermalCorrectEl = document.getElementById('thermal-correct');
+        const designCorrectEl = document.getElementById('design-correct');
+        const policyCorrectEl = document.getElementById('policy-correct');
+        const pvProgressEl = document.getElementById('pv-progress');
+        const thermalProgressEl = document.getElementById('thermal-progress');
+        const designProgressEl = document.getElementById('design-progress');
+        const policyProgressEl = document.getElementById('policy-progress');
+        const progressRingCircle = document.getElementById('progress-ring-circle');
+        const questionCategoryEl = document.getElementById('question-category');
+
+        // Event Listeners
+        document.getElementById('start-test-btn').addEventListener('click', startTest);
+        prevBtn.addEventListener('click', showPreviousQuestion);
+        nextBtn.addEventListener('click', showNextQuestion);
+        submitBtn.addEventListener('click', submitTest);
+
+        // Start the test
+        function startTest() {
+            instructionsEl.classList.add('hidden');
+            testContentEl.classList.remove('hidden');
+            
+            // Start timer
+            startTime = new Date();
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            // Load first question
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // Load a question
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            questionCategoryEl.textContent = question.category;
+            
+            // Set category tag color based on category
+            const categoryColors = {
+                "Photovoltaic Systems": "bg-blue-100 text-blue-800",
+                "Solar Thermal": "bg-orange-100 text-orange-800",
+                "System Design": "bg-yellow-100 text-yellow-800",
+                "Policy & Economics": "bg-purple-100 text-purple-800"
+            };
+            
+            questionCategoryEl.className = `text-xs px-3 py-1 rounded-full font-medium category-tag ${categoryColors[question.category] || 'bg-gray-100 text-gray-800'}`;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Add new options
+            question.options.forEach((option, i) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = `option-card p-5 border-2 border-gray-200 rounded-xl cursor-pointer transition-all hover:border-blue-300 ${
+                    userAnswers[index] === i ? 'selected border-blue-500 bg-blue-50' : ''
+                }`;
+                optionEl.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-7 h-7 rounded-full border-2 ${
+                            userAnswers[index] === i ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                        } mr-4 flex-shrink-0 flex items-center justify-center">
+                            ${userAnswers[index] === i ? '<i class="fas fa-check text-white text-xs"></i>' : ''}
+                        </div>
+                        <p class="text-gray-800 text-lg">${option}</p>
+                    </div>
+                `;
+                
+                optionEl.addEventListener('click', () => selectAnswer(index, i));
+                optionsContainerEl.appendChild(optionEl);
+            });
+            
+            // Update navigation buttons
+            currentQuestionEl.textContent = index + 1;
+            prevBtn.disabled = index === 0;
+            
+            // Show submit button on last question
+            if (index === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+            
+            // Update progress
+            updateProgress();
+        }
+
+        // Select an answer
+        function selectAnswer(questionIndex, optionIndex) {
+            if (testSubmitted) return;
+            
+            userAnswers[questionIndex] = optionIndex;
+            
+            // Update the selected option visually
+            const options = document.querySelectorAll('#options-container .option-card');
+            options.forEach((option, i) => {
+                const radio = option.querySelector('div div');
+                if (i === optionIndex) {
+                    option.classList.add('selected', 'border-blue-500', 'bg-blue-50');
+                    option.classList.remove('hover:border-blue-300');
+                    radio.className = 'w-7 h-7 rounded-full border-2 border-blue-500 bg-blue-500 mr-4 flex-shrink-0 flex items-center justify-center';
+                    radio.innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
+                } else {
+                    option.classList.remove('selected', 'border-blue-500', 'bg-blue-50');
+                    option.classList.add('hover:border-blue-300');
+                    radio.className = 'w-7 h-7 rounded-full border-2 border-gray-300 mr-4 flex-shrink-0 flex items-center justify-center';
+                    radio.innerHTML = '';
+                }
+            });
+            
+            // Update progress
+            updateProgress();
+        }
+
+        // Show previous question
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Show next question
+        function showNextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        // Update progress bar and counter
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const progressPercent = (answeredCount / questions.length) * 100;
+            
+            progressCountEl.textContent = answeredCount;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Update timer
+        function updateTimer() {
+            timeLeft--;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitTest();
+                return;
+            }
+            
+            // Flash timer when under 5 minutes
+            if (timeLeft <= 300 && !timerEl.classList.contains('flashing')) {
+                timerEl.classList.add('flashing');
+            }
+            
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timeRemainingEl.textContent = `${minutes} min ${seconds} sec remaining`;
+        }
+
+        // Submit the test
+        function submitTest() {
+            if (testSubmitted) return;
+            testSubmitted = true;
+            
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            const correctAnswers = questions.reduce((count, question, index) => {
+                return count + (userAnswers[index] === question.correctAnswer ? 1 : 0);
+            }, 0);
+            
+            const score = Math.round((correctAnswers / questions.length) * 100);
+            const passed = score >= 75;
+            
+            // Calculate category scores
+            const categories = {
+                "Photovoltaic Systems": { correct: 0, total: 0 },
+                "Solar Thermal": { correct: 0, total: 0 },
+                "System Design": { correct: 0, total: 0 },
+                "Policy & Economics": { correct: 0, total: 0 }
+            };
+            
+            questions.forEach((question, index) => {
+                const category = question.category;
+                categories[category].total++;
+                if (userAnswers[index] === question.correctAnswer) {
+                    categories[category].correct++;
+                }
+            });
+            
+            // Display results
+            testContentEl.classList.add('hidden');
+            resultsEl.classList.remove('hidden');
+            
+            // Create confetti effect if passed
+            if (passed) {
+                createConfetti();
+            }
+            
+            // Update progress ring
+            const circumference = 2 * Math.PI * 70;
+            const offset = circumference - (score / 100) * circumference;
+            progressRingCircle.style.strokeDashoffset = offset;
+            
+            scoreDisplayEl.textContent = `${score}%`;
+            scoreDisplayLargeEl.textContent = `${score}%`;
+            correctAnswersEl.textContent = correctAnswers;
+            resultStatusEl.textContent = passed ? "PASSED" : "FAILED";
+            resultStatusEl.className = `text-5xl font-bold ${
+                passed ? "text-green-600" : "text-red-600"
+            }`;
+            
+            // Set category scores
+            pvCorrectEl.textContent = categories["Photovoltaic Systems"].correct;
+            thermalCorrectEl.textContent = categories["Solar Thermal"].correct;
+            designCorrectEl.textContent = categories["System Design"].correct;
+            policyCorrectEl.textContent = categories["Policy & Economics"].correct;
+            
+            pvProgressEl.style.width = `${(categories["Photovoltaic Systems"].correct / categories["Photovoltaic Systems"].total) * 100}%`;
+            thermalProgressEl.style.width = `${(categories["Solar Thermal"].correct / categories["Solar Thermal"].total) * 100}%`;
+            designProgressEl.style.width = `${(categories["System Design"].correct / categories["System Design"].total) * 100}%`;
+            policyProgressEl.style.width = `${(categories["Policy & Economics"].correct / categories["Policy & Economics"].total) * 100}%`;
+            
+            // Set next steps message
+            nextStepsMessageEl.textContent = passed ?
+                "Congratulations on passing the Solar Energy Knowledge Test! You've demonstrated strong foundational knowledge and are now eligible to enroll in our Advanced Solar Technologies course." :
+                "You didn't quite reach the passing score this time. We recommend reviewing our Solar Energy Fundamentals course materials before attempting the test again. You can retake the test in 7 days.";
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                
+                document.body.appendChild(confetti);
+                
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.animate([
+                    { top: '-10px', opacity: 1, transform: `rotate(0deg) translateX(${Math.random() * 20 - 10}px)` },
+                    { top: '100vh', opacity: 0, transform: `rotate(${Math.random() * 360}deg) translateX(${Math.random() * 100 - 50}px)` }
+                ], {
+                    duration: animationDuration * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                });
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+        }
